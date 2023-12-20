@@ -13,7 +13,7 @@ namespace PlayhousePlugin.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+            var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
             for (var index = 0; index < KingAndCompetitor.KingAndCompetitors.Count; index++)
             {

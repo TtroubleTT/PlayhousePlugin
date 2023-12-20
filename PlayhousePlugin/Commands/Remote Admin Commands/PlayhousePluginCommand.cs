@@ -8,12 +8,11 @@ using CommandSystem;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
-using Kognity.DB.Account.Components;
-using Kognity.DB.Common.Cache;
 using MapEditorReborn.API.Features;
 using MEC;
 using Mirror;
 using Mirror.LiteNetLib4Mirror;
+using PlayerRoles;
 using PlayerStatsSystem;
 using PlayhousePlugin.Components;
 using PlayhousePlugin.Controllers;
@@ -37,7 +36,7 @@ namespace PlayhousePlugin.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             var p = Player.Get(((PlayerCommandSender) sender).ReferenceHub);
-            var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+            var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
             switch (arguments.At(0))
             {
@@ -75,7 +74,7 @@ namespace PlayhousePlugin.Commands
                         out RaycastHit originalHit2, 100);
                     
                     Log.Info(p.CurrentRoom.Name);
-                    Log.Info(p.CurrentRoom.Transform.InverseTransformPoint(originalHit2.point));
+                    Log.Info(p.CurrentRoom.transform.InverseTransformPoint(originalHit2.point));
                     Log.Info((p.GameObject.transform.localRotation*Quaternion.Euler(0,-180,0)).eulerAngles);
                     break;
                 
@@ -241,7 +240,7 @@ namespace PlayhousePlugin.Commands
                         {
                             if (e.Owner == p)
                             {
-                                p.SetRole(RoleType.NtfPrivate);
+                                p.set(RoleTypeId.NtfPrivate);
 
                                 Timing.CallDelayed(0.25f, () =>
                                 {
@@ -336,7 +335,7 @@ namespace PlayhousePlugin.Commands
                     break;
                 
                 case "amogus":
-                    p.ChangeAppearance(RoleType.Scp173);
+                    p.ChangeAppearance(RoleTypeId.Scp173);
                     break;
                 
                 case "accounttest":
@@ -637,13 +636,13 @@ namespace PlayhousePlugin.Commands
                 {
                     if (Ragdolls.Count != 10)
                     {
-                        var ragdoll = new Exiled.API.Features.Ragdoll(new RagdollInfo(Exiled.API.Features.Server.Host.ReferenceHub, handler, RoleType.Scp106, p.Position, p.CameraTransform.rotation, "amongst", 1.0));
+                        var ragdoll = new Exiled.API.Features.Ragdoll(new RagdollInfo(Exiled.API.Features.Server.Host.ReferenceHub, handler, RoleTypeId.Scp106, p.Position, p.CameraTransform.rotation, "amongst", 1.0));
                         ragdoll.Spawn();
                         Ragdolls.Add(ragdoll);
                     }
                     else
                     {
-                        var ragdoll = new Exiled.API.Features.Ragdoll(new RagdollInfo(Exiled.API.Features.Server.Host.ReferenceHub, handler, RoleType.Scp106, p.Position, p.CameraTransform.rotation, "amongst", 1.0));
+                        var ragdoll = new Exiled.API.Features.Ragdoll(new RagdollInfo(Exiled.API.Features.Server.Host.ReferenceHub, handler, RoleTypeId.Scp106, p.Position, p.CameraTransform.rotation, "amongst", 1.0));
                         ragdoll.Spawn();
                         
                         Ragdolls.Add(ragdoll);

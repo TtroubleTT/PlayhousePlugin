@@ -1,5 +1,6 @@
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using PlayhousePlugin.CustomClass.Abilities;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace PlayhousePlugin.CustomClass
         
         public override void Escape()
         {
-            Ply.Role.Type = RoleType.ChaosRifleman;
+            Ply.Role.Type = RoleTypeId.ChaosRifleman;
             Ply.CustomClassManager().DisposeCustomClass();
         }
 

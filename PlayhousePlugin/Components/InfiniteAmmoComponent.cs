@@ -28,7 +28,7 @@ namespace PlayhousePlugin
             if (s.Player.ReferenceHub != Hub.ReferenceHub)
                 return;
 
-            //ModifyAmmo(s.Shooter.ReferenceHub, 999);
+            //ModifyAmmo(s.Player.ReferenceHub, 999);
 			var f = s.Player.CurrentItem as Firearm;
 
 			f.Ammo = byte.MaxValue;

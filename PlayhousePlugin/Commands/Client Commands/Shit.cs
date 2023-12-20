@@ -32,7 +32,7 @@ namespace PlayhousePlugin.Commands
             }
 
             var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-            var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+            var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
             if (p.CurrentRoom.Type == RoomType.LczToilets)
             {

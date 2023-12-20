@@ -2,6 +2,7 @@ using System.Numerics;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using PlayhousePlugin.CustomClass.Abilities;
 using Vector3 = UnityEngine.Vector3;
 
@@ -16,7 +17,7 @@ namespace PlayhousePlugin.CustomClass
         public override AbilityBase[] ActiveAbilities { get; }
         public override void Escape()
         {
-            Ply.Role.Type = RoleType.NtfPrivate;
+            Ply.Role.Type = RoleTypeId.NtfPrivate;
             Ply.CustomClassManager().DisposeCustomClass();
             Ply.CustomClassManager().CustomClass = new ChaosHeretic(Ply);
         }

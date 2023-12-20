@@ -6,6 +6,8 @@ using Exiled.API.Features.Items;
 using MEC;
 using System;
 using System.Collections.Generic;
+using Exiled.API.Features.Pickups;
+using PlayerRoles;
 using UnityEngine;
 
 namespace PlayhousePlugin
@@ -14,8 +16,8 @@ namespace PlayhousePlugin
 	{
 		public static Dictionary<ItemType, List<int>> ItemsAndAngles = new Dictionary<ItemType, List<int>> {
 			// Cards
-			{ ItemType.KeycardNTFLieutenant, new List<int> {0, 90, 0 } },
-			{ ItemType.KeycardNTFCommander, new List<int> {0, 90, 0 } },
+			{ ItemType.KeycardMTFOperative, new List<int> {0, 90, 0 } },
+			{ ItemType.KeycardMTFCaptain, new List<int> {0, 90, 0 } },
 			{ ItemType.KeycardContainmentEngineer, new List<int> {0, 90, 0 } },
 			{ ItemType.KeycardFacilityManager, new List<int> {0, 90, 0 } },
 			{ ItemType.KeycardO5, new List<int> {0, 90, 0 } },
@@ -87,7 +89,7 @@ namespace PlayhousePlugin
 							afk = true;
 							if (Ply.CurrentRoom.Type == RoomType.Lcz914)
 							{
-								if (player.Role.Team == Team.SCP || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
+								if (player.Role.Team == Team.SCPs || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
 								{
 									MirrorExtensions.SendFakeSyncVar(player, pickup.netIdentity, pickupType, "NetworkInfo", fakePickupInfo);
 								}
@@ -103,7 +105,7 @@ namespace PlayhousePlugin
 							}
 							else
 							{
-								if (player.Role.Team == Team.SCP || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
+								if (player.Role.Team == Team.SCPs || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
 								{
 									MirrorExtensions.SendFakeSyncVar(player, pickup.netIdentity, pickupType, "NetworkInfo", fakePickupInfo);
 								}
@@ -123,7 +125,7 @@ namespace PlayhousePlugin
 						{
 							if (Ply.CurrentRoom.Type == RoomType.Lcz914)
 							{
-								if (player.Role.Team == Team.SCP || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
+								if (player.Role.Team == Team.SCPs || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
 								{
 									MirrorExtensions.SendFakeSyncVar(player, pickup.netIdentity, pickupType, "NetworkInfo", fakePickupInfo);
 								}
@@ -138,7 +140,7 @@ namespace PlayhousePlugin
 							}
 							else
 							{
-								if (player.Role.Team == Team.SCP || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
+								if (player.Role.Team == Team.SCPs || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
 								{
 									MirrorExtensions.SendFakeSyncVar(player, pickup.netIdentity, pickupType, "NetworkInfo", fakePickupInfo);
 								}

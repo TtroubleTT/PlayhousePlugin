@@ -2,6 +2,7 @@
 using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
+using PlayerRoles;
 using PlayerStatsSystem;
 using RemoteAdmin;
 
@@ -23,19 +24,19 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 			
 			if (p.IsAlive && !EventHandler.IsDeathMatchServer && !p.IsGodModeEnabled)
 			{
 				if (EventHandler.SillySunday)
 				{
-					if (p.Role.Type == RoleType.Tutorial && p.RemoteAdminAccess)
+					if (p.Role.Type == RoleTypeId.Tutorial && p.RemoteAdminAccess)
 					{
 						UtilityMethods.FakeExplode(p);
 					}
 					else
 					{
-						if (!p.IsSpawnProtected && p.Role.Type != RoleType.Tutorial)
+						if (!p.IsSpawnProtected && p.Role.Type != RoleTypeId.Tutorial)
 						{
 							UtilityMethods.FakeExplode(p);
 						}
@@ -50,10 +51,10 @@ namespace PlayhousePlugin.Commands
 				
 				if (!p.DoNotTrack)
 				{
-					if (Handler.killBindsUsed.ContainsKey(p))
-						Handler.killBindsUsed[p] += 1;
+					if (DamageHandler.killBindsUsed.ContainsKey(p))
+						DamageHandler.killBindsUsed[p] += 1;
 					else
-						Handler.killBindsUsed.Add(p, 1);
+						DamageHandler.killBindsUsed.Add(p, 1);
 				}
 
 				response = $"{p.Nickname} bid farewell cruel world";

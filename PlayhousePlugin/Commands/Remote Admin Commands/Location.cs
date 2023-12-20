@@ -21,7 +21,7 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
 			response = $"Position:{p.Position.x}, {p.Position.y}, {p.Position.z}\nRotation: {p.ReferenceHub.transform.rotation.eulerAngles.x}, {p.ReferenceHub.transform.rotation.eulerAngles.y}, {p.ReferenceHub.transform.rotation.eulerAngles.z}";
 			return true;

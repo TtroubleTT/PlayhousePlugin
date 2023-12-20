@@ -4,6 +4,7 @@ using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using RemoteAdmin;
 
 namespace PlayhousePlugin.Commands
@@ -24,7 +25,7 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
 			if (!Round.IsStarted)
 			{
@@ -32,7 +33,7 @@ namespace PlayhousePlugin.Commands
 				return true;
 			}
 
-			if (p.Role.Team != Team.SCP)
+			if (p.Role.Team != Team.SCPs)
 			{
 				response = "<color=red>You're not an SCP, why did you think that would work?</color>";
 				return true;
@@ -51,12 +52,12 @@ namespace PlayhousePlugin.Commands
 					switch (arguments.At(0).ToLower())
 					{
 						case "yes":
-							Player swap = Handler.OngoingReqs.FirstOrDefault(x => x.Value == p).Key;
+							Player swap = DamageHandler.OngoingReqs.FirstOrDefault(x => x.Value == p).Key;
 							if (swap != null)
 							{
 								PerformSwap(swap, p);
-								Timing.KillCoroutines(Handler.ReqCoroutines[swap]);
-								Handler.ReqCoroutines.Remove(swap);
+								Timing.KillCoroutines(DamageHandler.ReqCoroutines[swap]);
+								DamageHandler.ReqCoroutines.Remove(swap);
 
 								response = "<color=green>Swap successful!</color>";
 								return true;
@@ -66,13 +67,13 @@ namespace PlayhousePlugin.Commands
 							return true;
 
 						case "no":
-							swap = Handler.OngoingReqs.FirstOrDefault(x => x.Value == p).Key;
+							swap = DamageHandler.OngoingReqs.FirstOrDefault(x => x.Value == p).Key;
 							if (swap != null)
 							{
 								swap.ReferenceHub.characterClassManager.TargetConsolePrint(swap.ReferenceHub.scp079PlayerScript.connectionToClient, "Your swap request has been denied.", "red");
-								Timing.KillCoroutines(Handler.ReqCoroutines[swap]);
-								Handler.ReqCoroutines.Remove(swap);
-								Handler.OngoingReqs.Remove(swap);
+								Timing.KillCoroutines(DamageHandler.ReqCoroutines[swap]);
+								DamageHandler.ReqCoroutines.Remove(swap);
+								DamageHandler.OngoingReqs.Remove(swap);
 
 
 								response = "<color=red>Swap request denied.</color>";
@@ -82,13 +83,13 @@ namespace PlayhousePlugin.Commands
 							return true;
 
 						case "cancel":
-							if (Handler.OngoingReqs.ContainsKey(p))
+							if (DamageHandler.OngoingReqs.ContainsKey(p))
 							{
-								Player dest = Handler.OngoingReqs[p];
+								Player dest = DamageHandler.OngoingReqs[p];
 								dest.ReferenceHub.characterClassManager.TargetConsolePrint(dest.ReferenceHub.scp079PlayerScript.connectionToClient, "Your swap request has been cancelled.", "red");
-								Timing.KillCoroutines(Handler.ReqCoroutines[p]);
-								Handler.ReqCoroutines.Remove(p);
-								Handler.OngoingReqs.Remove(p);
+								Timing.KillCoroutines(DamageHandler.ReqCoroutines[p]);
+								DamageHandler.ReqCoroutines.Remove(p);
+								DamageHandler.OngoingReqs.Remove(p);
 
 								response = "<color=yellow>You have cancelled your swap request</color>";
 								return true;
@@ -97,7 +98,7 @@ namespace PlayhousePlugin.Commands
 							return true;
 
 						default:
-							if (p.Role.Type == RoleType.Scp0492)
+							if (p.Role.Type == RoleTypeId.Scp0492)
 							{
 								response = "<color=red>Stop crying and doing cheeky shit, play the fucking video game.</color>";
 								return true;
@@ -109,25 +110,25 @@ namespace PlayhousePlugin.Commands
 								return true;
 							}
 
-							if (Handler.OngoingReqs.ContainsKey(p))
+							if (DamageHandler.OngoingReqs.ContainsKey(p))
 							{
 								response = "<color=red>You already have a request pending.</color>";
 								return true;
 							}
 
-							RoleType role = valid[arguments.At(0)];
-							if(role == RoleType.Scp0492)
+							RoleTypeId role = valid[arguments.At(0)];
+							if(role == RoleTypeId.Scp0492)
 							{
 								response = "<color=red>That SCP is blacklisted</color>";
 								return true;
 							}
 
 
-							swap = Player.List.FirstOrDefault(x => role == RoleType.Scp93953 ? x.Role.Type == role || x.Role.Type == RoleType.Scp93989 : x.Role.Type == role);
+							swap = Player.List.FirstOrDefault(x => role == RoleTypeId.Scp93953 ? x.Role.Type == role || x.Role.Type == RoleTypeId.Scp93989 : x.Role.Type == role);
 
 							if (swap != null)
 							{
-								Handler.ReqCoroutines.Add(p, Timing.RunCoroutine(SendRequest(p, swap)));
+								DamageHandler.ReqCoroutines.Add(p, Timing.RunCoroutine(SendRequest(p, swap)));
 								response = "<color=green>Swap request sent!</color>";
 								return true;
 							}
@@ -141,25 +142,25 @@ namespace PlayhousePlugin.Commands
 			}
 		}
 
-		private Dictionary<string, RoleType> valid = new Dictionary<string, RoleType>()
+		private Dictionary<string, RoleTypeId> valid = new Dictionary<string, RoleTypeId>()
 		{
-			{"173", RoleType.Scp173},
-			{"peanut", RoleType.Scp173},
-			{"939", RoleType.Scp93953},
-			{"dog", RoleType.Scp93953},
-			{"079", RoleType.Scp079},
-			{"computer", RoleType.Scp079},
-			{"106", RoleType.Scp106},
-			{"larry", RoleType.Scp106},
-			{"096", RoleType.Scp096},
-			{"shyguy", RoleType.Scp096},
-			{"049", RoleType.Scp049},
-			{"doctor", RoleType.Scp049},
+			{"173", RoleTypeId.Scp173},
+			{"peanut", RoleTypeId.Scp173},
+			{"939", RoleTypeId.Scp93953},
+			{"dog", RoleTypeId.Scp93953},
+			{"079", RoleTypeId.Scp079},
+			{"computer", RoleTypeId.Scp079},
+			{"106", RoleTypeId.Scp106},
+			{"larry", RoleTypeId.Scp106},
+			{"096", RoleTypeId.Scp096},
+			{"shyguy", RoleTypeId.Scp096},
+			{"049", RoleTypeId.Scp049},
+			{"doctor", RoleTypeId.Scp049},
 		};
 
 		private IEnumerator<float> SendRequest(Player source, Player dest)
 		{
-			PlayhousePlugin.PlayhousePluginRef.Handler.OngoingReqs.Add(source, dest);
+			PlayhousePlugin.PlayhousePluginRef.DamageHandler.OngoingReqs.Add(source, dest);
 			dest.Broadcast(5, "<i>You have an SCP Swap request!\nCheck your console by pressing [`] or [~]</i>");
 			dest.ReferenceHub.characterClassManager.TargetConsolePrint(dest.ReferenceHub.scp079PlayerScript.connectionToClient, $"You have received a swap request from {source.ReferenceHub.nicknameSync.Network_myNickSync} who is SCP-{valid.FirstOrDefault(x => x.Value == source.Role.Type).Key}. Would you like to swap with them? Type \".scpswap yes\" to accept or \".scpswap no\" to decline.", "yellow");
 			yield return Timing.WaitForSeconds(120);
@@ -168,29 +169,29 @@ namespace PlayhousePlugin.Commands
 
 		private void TimeoutRequest(Player source)
 		{
-			if (PlayhousePlugin.PlayhousePluginRef.Handler.OngoingReqs.ContainsKey(source))
+			if (PlayhousePlugin.PlayhousePluginRef.DamageHandler.OngoingReqs.ContainsKey(source))
 			{
-				Player dest = PlayhousePlugin.PlayhousePluginRef.Handler.OngoingReqs[source];
+				Player dest = PlayhousePlugin.PlayhousePluginRef.DamageHandler.OngoingReqs[source];
 				source.ReferenceHub.characterClassManager.TargetConsolePrint(source.ReferenceHub.scp079PlayerScript.connectionToClient, "The player did not respond to your request.", "red");
 				dest.ReferenceHub.characterClassManager.TargetConsolePrint(dest.ReferenceHub.scp079PlayerScript.connectionToClient, "Your swap request has timed out.", "red");
-				PlayhousePlugin.PlayhousePluginRef.Handler.OngoingReqs.Remove(source);
+				PlayhousePlugin.PlayhousePluginRef.DamageHandler.OngoingReqs.Remove(source);
 			}
 		}
 
 		private void PerformSwap(Player source, Player dest)
 		{
-			if(source.Role.Type == RoleType.Spectator || dest.Role.Type == RoleType.Spectator)
+			if(source.Role.Type == RoleTypeId.Spectator || dest.Role.Type == RoleTypeId.Spectator)
 			{
 				source.ReferenceHub.characterClassManager.TargetConsolePrint(source.ReferenceHub.scp079PlayerScript.connectionToClient, "Swap Cancelled, spectator detected", "red");
 				dest.ReferenceHub.characterClassManager.TargetConsolePrint(source.ReferenceHub.scp079PlayerScript.connectionToClient, "Swap Cancelled, spectator detected", "red");
 
-				PlayhousePlugin.PlayhousePluginRef.Handler.OngoingReqs.Remove(source);
+				PlayhousePlugin.PlayhousePluginRef.DamageHandler.OngoingReqs.Remove(source);
 				return;
 			}
 			source.ReferenceHub.characterClassManager.TargetConsolePrint(source.ReferenceHub.scp079PlayerScript.connectionToClient, "Swap successful!", "green");
 
-			RoleType sRole = source.Role.Type;
-			RoleType dRole = dest.Role.Type;
+			RoleTypeId sRole = source.Role.Type;
+			RoleTypeId dRole = dest.Role.Type;
 
 			float sHealth = source.Health;
 			float dHealth = dest.Health;
@@ -204,7 +205,7 @@ namespace PlayhousePlugin.Commands
 				dest.Health = sHealth;
 			});
 
-			PlayhousePlugin.PlayhousePluginRef.Handler.OngoingReqs.Remove(source);
+			PlayhousePlugin.PlayhousePluginRef.DamageHandler.OngoingReqs.Remove(source);
 		}
 	}
 }

@@ -2,6 +2,8 @@ using Exiled.API.Features;
 using MEC;
 using System.Collections.Generic;
 using Exiled.API.Enums;
+using Exiled.API.Features.Doors;
+using PlayerRoles;
 using Respawning;
 using UnityEngine;
 
@@ -16,7 +18,7 @@ namespace PlayhousePlugin
 
 			foreach (Room room in Room.List)
 			{
-				room.FlickerableLightController.WarheadLightOverride = true;
+				room.RoomLightController.LightsEnabled = true;
 				room.TurnOffLights(2f);
 			}
 			
@@ -39,7 +41,7 @@ namespace PlayhousePlugin
 			// 13 Minutes into the round	
 			foreach (Room room in Room.List)
 			{
-				room.FlickerableLightController.WarheadLightOverride = true;
+				room.RoomLightController.LightsEnabled = true;
 				room.TurnOffLights(1f);
 			}
 
@@ -60,7 +62,7 @@ namespace PlayhousePlugin
 			// 18 Minutes into the round
 			foreach (Room room in Room.List)
 			{
-				room.FlickerableLightController.WarheadLightOverride = true;
+				room.RoomLightController.LightsEnabled = true;
 				room.TurnOffLights(1f);
 			}
 
@@ -196,14 +198,14 @@ namespace PlayhousePlugin
 				yield return Timing.WaitForSeconds(1);
 				foreach (var player in Player.List)
 				{
-					if (player.Role.Type == RoleType.Scp079) continue;
+					if (player.Role.Type == RoleTypeId.Scp079) continue;
 					if (player.ReferenceHub.transform.position.y < 800)
 					{
 						player.Hurt((int)player.MaxHealth*0.1f, "Decontamination");
 						Log.Info("DECONTAMINATING");
 					}
 
-					if (player.Role.Type == RoleType.Scp106)
+					if (player.Role.Type == RoleTypeId.Scp106)
 					{
 						player.ReferenceHub.scp106PlayerScript.NetworkportalPosition = Vector3.zero;
 					}
@@ -212,14 +214,14 @@ namespace PlayhousePlugin
 			
 			foreach (var player in Player.List)
 			{
-				if (player.Role.Type == RoleType.Scp079) continue;
+				if (player.Role.Type == RoleTypeId.Scp079) continue;
 				if (player.ReferenceHub.transform.position.y < 800)
 				{
 					player.Hurt(int.MaxValue, "Please die already");
 					Log.Info("DECONTAMINATING");
 				}
 
-				if (player.Role.Type == RoleType.Scp106)
+				if (player.Role.Type == RoleTypeId.Scp106)
 				{
 					player.ReferenceHub.scp106PlayerScript.NetworkportalPosition = Vector3.zero;
 				}

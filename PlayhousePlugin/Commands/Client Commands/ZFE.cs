@@ -1,6 +1,7 @@
 ﻿using System;
 using CommandSystem;
 using Exiled.API.Features;
+using PlayerRoles;
 using RemoteAdmin;
 
 namespace PlayhousePlugin.Commands
@@ -21,18 +22,18 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
-			if (p.Role.Team == Team.SCP && EventHandler.SillySunday)
+			if (p.Role.Team == Team.SCPs && EventHandler.SillySunday)
 			{
-				if(p.Role.Type == RoleType.Scp0492)
+				if(p.Role.Type == RoleTypeId.Scp0492)
 				{
 					UtilityMethods.Explode(p);
 					/*
 					//p.Kill(DamageTypes.Grenade);
 					foreach (Player ply in Player.List)
 					{
-						if (ply.Role.Type == RoleType.Spectator || ply.Role.Type == RoleType.Scp079 || ply.IsGodModeEnabled || ply.ReferenceHub.characterClassManager.SpawnProtected || p == ply || ply.Role.Team == Team.SCP) continue;
+						if (ply.Role.Type == RoleTypeId.Spectator || ply.Role.Type == RoleTypeId.Scp079 || ply.IsGodModeEnabled || ply.ReferenceHub.characterClassManager.SpawnProtected || p == ply || ply.Role.Team == Team.SCPs) continue;
 
 						if (Vector3.Distance(p.Position, ply.Position) <= 10)
 						{

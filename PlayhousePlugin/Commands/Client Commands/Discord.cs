@@ -21,7 +21,7 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
 			response = "\nJoin the Discord for some Server Perks!\nhttps://discord.gg/kognity";
 			return true;

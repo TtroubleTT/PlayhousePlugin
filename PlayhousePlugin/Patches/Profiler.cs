@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Exiled.API.Features;
 using Exiled.Events;
-using Exiled.Events.Extensions;
 using HarmonyLib;
 
 namespace PlayhousePlugin

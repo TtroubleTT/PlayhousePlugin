@@ -15,7 +15,7 @@ namespace PlayhousePlugin.CustomClass.SCP
         public override void Replace(Player ply)
         {
             Dispose();
-            ply.Role.Type = Ply.Role.Type;
+            ply.Role.Set(Ply.Role.Type);
         }
 
         public SCP079CustomClass(Player ply)
@@ -23,8 +23,6 @@ namespace PlayhousePlugin.CustomClass.SCP
             Ply = ply;
             ActiveAbilities = new AbilityBase[]
             {
-                new Stalk(ply),
-                new GeneratorOverride(ply),
                 new WarheadJam(ply),
                 new Neurotoxin(ply)
             };

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
+using PlayerRoles;
 using RemoteAdmin;
 
 namespace PlayhousePlugin.Commands
@@ -23,11 +24,11 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
-			if (p.Role.Team == Team.SCP)
+			if (p.Role.Team == Team.SCPs)
 			{
-				IEnumerable<Player> SCPs = Player.List.Where(r => r.Role.Team == Team.SCP);
+				IEnumerable<Player> SCPs = Player.List.Where(r => r.Role.Team == Team.SCPs);
 
 				string responseMessage = "----------";
 

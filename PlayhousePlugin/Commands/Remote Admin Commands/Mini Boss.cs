@@ -4,6 +4,7 @@ using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using RemoteAdmin;
 using UnityEngine;
 
@@ -25,13 +26,13 @@ namespace PlayhousePlugin.Commands
             }
 
             var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-            var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+            var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
             foreach (var player in arguments.ToList())
             {
                 Player ply = Player.Get(player);
 
-                ply.Role.Type = RoleType.ChaosRepressor;
+                ply.Role.Set(RoleTypeId.ChaosRepressor);
                 ply.ClearInventory();
                 ply.AddItem(ItemType.GunLogicer);
                 ply.Health = 15000;

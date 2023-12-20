@@ -6,9 +6,12 @@ using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs;
+using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.Pickups;
 using InventorySystem.Items.Usables.Scp330;
+using MapEditorReborn.API.Extensions;
 using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using Mirror;
@@ -84,7 +87,7 @@ namespace PlayhousePlugin.Controllers
             ItemType.SCP500,
             
             // EZ Specific
-            ItemType.KeycardNTFOfficer,
+            ItemType.KeycardMTFOperative,
             ItemType.ArmorHeavy,
             
         };
@@ -143,8 +146,8 @@ namespace PlayhousePlugin.Controllers
                 
                 var vendingMachine = MapUtils.GetSchematicDataByName("Vending_Machine");
                 var vendingMachineObj = ObjectSpawner.SpawnSchematic("Vending_Machine",
-                    value.Key.Transform.TransformPoint(posRot.Pos),
-                    value.Key.Transform.rotation * Quaternion.Euler(posRot.Rot), Vector3.one, vendingMachine);
+                    value.Key.transform.TransformPoint(posRot.Pos),
+                    value.Key.transform.rotation * Quaternion.Euler(posRot.Rot), Vector3.one, vendingMachine);
                 
                 vendingMachineObj.gameObject.AddComponent<VendingMachineController>().Init(vendingMachineObj);
                 VendingMachines.Add(vendingMachineObj.GetComponent<VendingMachineController>());
@@ -164,8 +167,8 @@ namespace PlayhousePlugin.Controllers
                     
                 var vendingMachine = MapUtils.GetSchematicDataByName("Vending_Machine");
                 var vendingMachineObj = ObjectSpawner.SpawnSchematic("Vending_Machine",
-                    value.Key.Transform.TransformPoint(posRot.Pos),
-                    value.Key.Transform.rotation * Quaternion.Euler(posRot.Rot), Vector3.one, vendingMachine);
+                    value.Key.transform.TransformPoint(posRot.Pos),
+                    value.Key.transform.rotation * Quaternion.Euler(posRot.Rot), Vector3.one, vendingMachine);
 
                 vendingMachineObj.gameObject.AddComponent<VendingMachineController>().Init(vendingMachineObj);
                 VendingMachines.Add(vendingMachineObj.GetComponent<VendingMachineController>());
@@ -175,9 +178,9 @@ namespace PlayhousePlugin.Controllers
         
         public void Init(SchematicObject obj)
         {
-            Exiled.Events.Handlers.Player.PickingUpArmor += OnPickingUpArmor;
+            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpArmor;
             Buttons = new List<Pickup>();
-            vendingMachineType = Map.FindParentRoom(gameObject).Zone == ZoneType.Entrance
+            vendingMachineType = Room.FindParentRoom(gameObject).Zone == ZoneType.Entrance
                 ? VendingMachineType.EntranceZone
                 : VendingMachineType.LightContainmentZone;
 
@@ -185,7 +188,7 @@ namespace PlayhousePlugin.Controllers
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    var Button = Item.Create(ItemType.ArmorLight).Spawn(
+                    var Button = Item.Create(ItemType.ArmorLight).CreatePickup(
                         gameObject.transform.TransformPoint(_basePosition + new Vector3(step * -j, step * i, 0)));
                     Button.Scale = Vector3.one * 0.1f;
                     Button.Rotation = gameObject.transform.rotation * Quaternion.Euler(0,-90,0);
@@ -213,7 +216,7 @@ namespace PlayhousePlugin.Controllers
                 }
             }
 
-            var RefundButton = Item.Create(ItemType.ArmorLight).Spawn(gameObject.transform.TransformPoint(_refundPosition));
+            var RefundButton = Item.Create(ItemType.ArmorLight).CreatePickup(gameObject.transform.TransformPoint(_refundPosition));
             RefundButton.Scale = new Vector3(0.1f, 0.1f, 0.2f);
             RefundButton.Rotation = gameObject.transform.rotation * Quaternion.Euler(0,-90,0);
 
@@ -296,13 +299,13 @@ namespace PlayhousePlugin.Controllers
 
             for (int i = 0; i < EventHandler.random.Next(3); i++)
             {
-                Item.Create(ItemType.Coin).Spawn(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
+                Item.Create(ItemType.Coin).CreatePickup(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
             }
         }
 
         private void OnDestroy()
         {
-            Exiled.Events.Handlers.Player.PickingUpArmor -= OnPickingUpArmor;
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpArmor;
             foreach (var button in Buttons)
                 button.Destroy();
         }
@@ -317,19 +320,19 @@ namespace PlayhousePlugin.Controllers
             VendingMachines.Clear();
         }
 
-        private void OnPickingUpArmor(PickingUpArmorEventArgs ev)
+        private void OnPickingUpArmor(PickingUpItemEventArgs ev)
         {
             if(Buttons.Contains(ev.Pickup))
             {
                 ev.IsAllowed = false;
-                ev.Pickup.Locked = false;
+                ev.Pickup.IsLocked = false;
                 ev.Pickup.InUse = false;
 
                 if (ev.Pickup == Buttons.Last())
                 {
                     for (int i = 0; i < _coins; i++)
                     {
-                        Item.Create(ItemType.Coin).Spawn(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
+                        Item.Create(ItemType.Coin).CreatePickup(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
                     }
                     
                     _coins = 0;
@@ -384,7 +387,7 @@ namespace PlayhousePlugin.Controllers
                             case "MysteryBox":
                                 if (vendingMachineType == VendingMachineType.EntranceZone)
                                 {
-                                    Item.Create(MysteryBoxLootEZ.PickRandom()).Spawn(
+                                    Item.Create(MysteryBoxLootEZ.PickRandom()).CreatePickup(
                                         gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
                                 }
                                 else
@@ -395,11 +398,11 @@ namespace PlayhousePlugin.Controllers
                                     {
                                         var f = (Firearm) Firearm.Create(item);
                                         f.Ammo = 0;
-                                        f.Spawn(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
+                                        f.CreatePickup(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
                                     }
                                     else
                                     {
-                                        Item.Create(item).Spawn(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
+                                        Item.Create(item).CreatePickup(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
                                     }
                                 }
 
@@ -408,10 +411,10 @@ namespace PlayhousePlugin.Controllers
                     }
                     else
                     {
-                        Item.Create(_vendingMachineItems[index].ItemType).Spawn(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
+                        Item.Create(_vendingMachineItems[index].ItemType).CreatePickup(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
                         if (_vendingMachineItems[index].ItemType.IsAmmo())
                         {
-                            Item.Create(_vendingMachineItems[index].ItemType).Spawn(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
+                            Item.Create(_vendingMachineItems[index].ItemType).CreatePickup(gameObject.transform.TransformPoint(0, 0.3f, 0.5f));
                         }
                     }
 

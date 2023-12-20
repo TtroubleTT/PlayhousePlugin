@@ -1,5 +1,6 @@
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using UnityEngine;
 
 namespace PlayhousePlugin.CustomClass
@@ -14,7 +15,7 @@ namespace PlayhousePlugin.CustomClass
         
         public override void Escape()
         {
-            Ply.Role.Type = RoleType.NtfCaptain;
+            Ply.Role.Type = RoleTypeId.NtfCaptain;
             Ply.CustomClassManager().DisposeCustomClass();
             Ply.CustomClassManager().CustomClass = new NTFManager(Ply);
         }

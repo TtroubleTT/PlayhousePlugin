@@ -99,7 +99,7 @@ namespace PlayhousePlugin.Components
                 _position, Quaternion.Euler(new Vector3(0, gameObject.transform.localEulerAngles.y, 0)), Vector3.one, schematicData);
 
             // Activate Button
-            _activateButton = Item.Create(ItemType.ArmorLight).Spawn(_position +Vector3.down*0.14f);
+            _activateButton = Item.Create(ItemType.ArmorLight).CreatePickup(_position +Vector3.down*0.14f);
             _activateButton.Scale = new Vector3(0.1f, 1f, 1f);
             _activateButton.Rotation = Quaternion.Euler(-90, -90 + gameObject.transform.localEulerAngles.y, 0);
             _activateButton.Weight = 0.01f;
@@ -171,7 +171,7 @@ namespace PlayhousePlugin.Components
                 if (ObjectivePointController.FailedObjectives && _state == Utils.ObjectiveStates.Activating && !AllowAllToCap)
                 {
                     _capturedAmount = 0;
-                    _activateButton.Locked = true;
+                    _activateButton.IsLocked = true;
                     _activateButton.InUse = true;
                     
                     _state = Utils.ObjectiveStates.Disabled;
@@ -204,12 +204,12 @@ namespace PlayhousePlugin.Components
                         }
                         else
                         {
-                            if (ply.Role.Team == Team.MTF)
+                            if (ply.Role.Team == Team.FoundationForces)
                             {
                                 playersCapturing += 1;
                             }
-                            else if (ply.Role.Team == Team.RSC || (ply.Role.Team == Team.CDP && ply.IsCuffed) ||
-                                     ply.Role.Team == Team.RIP || ply.Role.Team == Team.TUT)
+                            else if (ply.Role.Team == Team.Scientists || (ply.Role.Team == Team.ClassD && ply.IsCuffed) ||
+                                     ply.Role.Team == Team.Dead || ply.Role.Team == Team.TUT)
                             {
                             }
                             else
@@ -232,7 +232,7 @@ namespace PlayhousePlugin.Components
                     foreach (var player in countedPlayers)
                         player.ShowCenterUpHint($"Captured {Math.Round(_capturedAmount/_captureRequirement*100, 0)}%");
 
-                    if (RoleToNotify != RoleType.None)
+                    if (RoleToNotify != RoleTypeId.None)
                     {
                         foreach (Player ply in Player.List.Where(x => x.Role.Type == RoleToNotify))
                         {
@@ -286,12 +286,12 @@ namespace PlayhousePlugin.Components
 
                     if (AllowAllToCap)
                     {
-                        _activateButton.Locked = true;
+                        _activateButton.IsLocked = true;
                         _activateButton.InUse = true;
                     }
                     else
                     {
-                        _activateButton.Locked = false;
+                        _activateButton.IsLocked = false;
                         _activateButton.InUse = false;
                     }
 
@@ -306,7 +306,7 @@ namespace PlayhousePlugin.Components
                     Log.Info("Disabled objective");
 
                     _capturedAmount = 0;
-                    _activateButton.Locked = false;
+                    _activateButton.IsLocked = false;
                     _activateButton.InUse = false;
                     
                     _state = Utils.ObjectiveStates.Disabled;
@@ -331,25 +331,25 @@ namespace PlayhousePlugin.Components
                         _state = Utils.ObjectiveStates.Activating;
                         _display.Primitive.Base.NetworkMaterialColor = ColorsAndStates[_state];
                     
-                        ev.Pickup.Locked = true;
+                        ev.Pickup.IsLocked = true;
                         ev.Pickup.InUse = true;
                     }
                     else
                     {
                         ev.Player.ShowCenterDownHint("<color=red>1 079 Generator is required to power this objective point!</color>", 3);
                     
-                        ev.Pickup.Locked = false;
+                        ev.Pickup.IsLocked = false;
                         ev.Pickup.InUse = false;
                     }   
                 }
                 else
                 {
-                    if (_state == Utils.ObjectiveStates.Disabled && ev.Player.Role.Team == Team.MTF && Generator.List.Count(x=>x.IsEngaged) >= 1)
+                    if (_state == Utils.ObjectiveStates.Disabled && ev.Player.Role.Team == Team.FoundationForces && Generator.List.Count(x=>x.IsEngaged) >= 1)
                     {
                         _state = Utils.ObjectiveStates.Activating;
                         _display.Primitive.Base.NetworkMaterialColor = ColorsAndStates[_state];
                     
-                        ev.Pickup.Locked = true;
+                        ev.Pickup.IsLocked = true;
                         ev.Pickup.InUse = true;
                     }
                     else
@@ -357,7 +357,7 @@ namespace PlayhousePlugin.Components
                         if (_state == Utils.ObjectiveStates.Enabled)
                         {
                             ev.Player.ShowCenterDownHint($"<color=green>{ObjectivePointController.objectivesCapped} out of 6 Generators enabled.</color>", 3);
-                            ev.Pickup.Locked = false;
+                            ev.Pickup.IsLocked = false;
                             ev.Pickup.InUse = false;
                             return;
                         }
@@ -367,7 +367,7 @@ namespace PlayhousePlugin.Components
                         else
                             ev.Player.ShowCenterDownHint("<color=red>You cannot activate these objectives!</color>", 3);
                     
-                        ev.Pickup.Locked = false;
+                        ev.Pickup.IsLocked = false;
                         ev.Pickup.InUse = false;
                     }   
                 }

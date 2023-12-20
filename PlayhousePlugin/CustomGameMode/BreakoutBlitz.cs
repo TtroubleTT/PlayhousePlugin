@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups;
 using MEC;
 
 namespace PlayhousePlugin.CustomGameMode
@@ -23,7 +24,7 @@ namespace PlayhousePlugin.CustomGameMode
             {
                 Log.Info("AeeA");
                 yield return Timing.WaitForSeconds(60f);
-                foreach(Pickup pickup in Map.Pickups)
+                foreach(Pickup pickup in Pickup.List)
                 {
                     if(!PickupsToNotClear.Contains(pickup))
                     {
@@ -31,9 +32,9 @@ namespace PlayhousePlugin.CustomGameMode
                     }
                 }
 
-                foreach (var ragdoll in Map.Ragdolls)
+                foreach (var ragdoll in Ragdoll.List)
                 {
-                    ragdoll.Delete();
+                    ragdoll.Destroy();
                 }
             }
         }

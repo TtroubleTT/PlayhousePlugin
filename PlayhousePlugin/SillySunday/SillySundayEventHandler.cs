@@ -9,6 +9,7 @@ using System.Linq;
 using UnityEngine;
 using InventorySystem.Items.Pickups;
 using Exiled.API.Extensions;
+using PlayerRoles;
 
 namespace PlayhousePlugin
 {
@@ -57,7 +58,7 @@ namespace PlayhousePlugin
 
 			// Cleans all the ragdolls
 			foreach (Ragdoll doll in UnityEngine.Object.FindObjectsOfType<Ragdoll>())
-				NetworkServer.Destroy(doll.gameObject);
+				NetworkServer.Destroy(doll.GameObject);
 
 			List<Player> classds = new List<Player> { };
 			List<Player> scientists = new List<Player> { };
@@ -101,7 +102,7 @@ namespace PlayhousePlugin
 
 			foreach (Player scientist in scientists)
 			{
-				scientist.Role.Type = RoleType.Scientist;
+				scientist.Role.Set(RoleTypeId.Scientist);
 				Timing.CallDelayed(0.8f, () =>
 				{
 					scientist.ClearInventory();
@@ -114,13 +115,13 @@ namespace PlayhousePlugin
 
 			foreach (Player classd in classds)
 			{
-				classd.Role.Type = RoleType.ClassD;
+				classd.Role.Set(RoleTypeId.ClassD);
 				Timing.CallDelayed(0.8f, () =>
 				{
 					classd.ClearInventory();
 					classd.ClearBroadcasts();
 					classd.AddItem(ItemType.GunCOM15);
-					classd.Position = RoleExtensions.GetRandomSpawnProperties(RoleType.ClassD).Item1;
+					classd.Position = RoleExtensions.GetRandomSpawnLocation(RoleTypeId.ClassD).Position;
 					classd.Ammo[ItemType.Ammo9x19] = 10;
 				});
 			}
@@ -159,32 +160,32 @@ namespace PlayhousePlugin
 
 			foreach (Player scientist in scientists)
 			{
-				scientist.Role.Type = RoleType.Scientist;
+				scientist.Role.Set(RoleTypeId.Scientist);
 				Timing.CallDelayed(0.8f, () =>
 				{
 					scientist.ClearInventory();
 					scientist.ClearBroadcasts();
 					scientist.AddItem(ItemType.GunFSP9);
 					scientist.Position = new Vector3(
-						RoleExtensions.GetRandomSpawnProperties(RoleType.Scp096).Item1.x,
-						RoleExtensions.GetRandomSpawnProperties(RoleType.Scp096).Item1.y + 2f,
-						RoleExtensions.GetRandomSpawnProperties(RoleType.Scp096).Item1.z);
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp096).Position.x,
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp096).Position.y + 2f,
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp096).Position.z);
 					scientist.Ammo[ItemType.Ammo9x19] = 10;
 				});
 			}
 
 			foreach (Player classd in classds)
 			{
-				classd.Role.Type = RoleType.ClassD;
+				classd.Role.Set(RoleTypeId.ClassD);
 				Timing.CallDelayed(0.8f, () =>
 				{
 					classd.ClearInventory();
 					classd.ClearBroadcasts();
 					classd.AddItem(ItemType.GunFSP9);
 					classd.Position = new Vector3(
-						RoleExtensions.GetRandomSpawnProperties(RoleType.Scp93953).Item1.x,
-						RoleExtensions.GetRandomSpawnProperties(RoleType.Scp93953).Item1.y + 2f,
-						RoleExtensions.GetRandomSpawnProperties(RoleType.Scp93953).Item1.z);
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp939).Position.x,
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp939).Position.y + 2f,
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp939).Position.z);
 					classd.Ammo[ItemType.Ammo9x19] = 10;
 				});
 			}
@@ -207,12 +208,12 @@ namespace PlayhousePlugin
 			List<Player> guards = new List<Player> { };
 			bool toggle = false;
 
-			Vector3 pt1 = RoleExtensions.GetRandomSpawnProperties(RoleType.FacilityGuard).Item1;
-			Vector3 pt2 = RoleExtensions.GetRandomSpawnProperties(RoleType.FacilityGuard).Item1;
+			Vector3 pt1 = RoleExtensions.GetRandomSpawnLocation(RoleTypeId.FacilityGuard).Position;
+			Vector3 pt2 = RoleExtensions.GetRandomSpawnLocation(RoleTypeId.FacilityGuard).Position;
 
 			while(pt1 == pt2)
 			{
-				pt2 = RoleExtensions.GetRandomSpawnProperties(RoleType.FacilityGuard).Item1;
+				pt2 = RoleExtensions.GetRandomSpawnLocation(RoleTypeId.FacilityGuard).Position;
 			}
 
 			foreach (Player Ply in Player.List)
@@ -231,7 +232,7 @@ namespace PlayhousePlugin
 
 			foreach (Player guard in guards)
 			{
-				guard.Role.Type = RoleType.FacilityGuard;
+				guard.Role.Set(RoleTypeId.FacilityGuard);
 				Timing.CallDelayed(0.8f, () =>
 				{
 					guard.ClearInventory();
@@ -247,7 +248,7 @@ namespace PlayhousePlugin
 
 			foreach (Player classd in classds)
 			{
-				classd.Role.Type = RoleType.ClassD;
+				classd.Role.Set(RoleTypeId.ClassD);
 				Timing.CallDelayed(0.8f, () =>
 				{
 					classd.ClearInventory();
@@ -296,32 +297,32 @@ namespace PlayhousePlugin
 
 			foreach (Player mtf in mtfs)
 			{
-				mtf.Role.Type = RoleType.NtfPrivate;
+				mtf.Role.Set(RoleTypeId.NtfPrivate);
 				Timing.CallDelayed(0.8f, () =>
 				{
 					mtf.ClearInventory();
 					mtf.ClearBroadcasts();
 					mtf.AddItem(ItemType.GunLogicer);
 					mtf.Position = new Vector3(
-						RoleExtensions.GetRandomSpawnProperties(RoleType.NtfPrivate).Item1.x,
-						RoleExtensions.GetRandomSpawnProperties(RoleType.NtfPrivate).Item1.y + 2f,
-						RoleExtensions.GetRandomSpawnProperties(RoleType.NtfPrivate).Item1.z);
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.NtfPrivate).Position.x,
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.NtfPrivate).Position.y + 2f,
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.NtfPrivate).Position.z);
 					mtf.Ammo[ItemType.Ammo762x39] = 10;
 				});
 			}
 
 			foreach (Player classd in classds)
 			{
-				classd.Role.Type = RoleType.ClassD;
+				classd.Role.Set(RoleTypeId.ClassD);
 				Timing.CallDelayed(0.8f, () =>
 				{
 					classd.ClearInventory();
 					classd.ClearBroadcasts();
 					classd.AddItem(ItemType.GunLogicer);
 					classd.Position = new Vector3(
-						RoleExtensions.GetRandomSpawnProperties(RoleType.ChaosConscript).Item1.x,
-						RoleExtensions.GetRandomSpawnProperties(RoleType.ChaosConscript).Item1.y + 2f,
-						RoleExtensions.GetRandomSpawnProperties(RoleType.ChaosConscript).Item1.z);
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.ChaosConscript).Position.x,
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.ChaosConscript).Position.y + 2f,
+						RoleExtensions.GetRandomSpawnLocation(RoleTypeId.ChaosConscript).Position.z);
 					classd.Ammo[ItemType.Ammo762x39] = 10;
 				});
 			}
@@ -338,12 +339,12 @@ namespace PlayhousePlugin
 			yield return Timing.WaitForSeconds(120f);
 			foreach(Player Ply in Player.List)
 			{
-				if(Ply.Role.Type == RoleType.Spectator)
+				if(Ply.Role.Type == RoleTypeId.Spectator)
 				{
-					Ply.Role.Type = RoleType.Scp93953;
+					Ply.Role.Set(RoleTypeId.Scp939);
 					Timing.CallDelayed(0.8f, () =>
 					{
-						Ply.Position = RoleExtensions.GetRandomSpawnProperties(RoleType.ChaosConscript).Item1;
+						Ply.Position = RoleExtensions.GetRandomSpawnLocation(RoleTypeId.ChaosConscript).Position;
 					});
 				}
 			}
@@ -369,7 +370,7 @@ namespace PlayhousePlugin
 
 			scientist.ClearBroadcasts();
 
-			scientist.Role.Type = RoleType.Scientist;
+			scientist.Role.Set(RoleTypeId.Scientist);
 			scientist.MaxHealth = 200;
 			scientist.Health = 200;
 			GiveInventory(scientist);
@@ -386,7 +387,7 @@ namespace PlayhousePlugin
 			foreach (Player ntf in ntfUnits)
 			{
 				ntf.ClearBroadcasts();
-				ntf.Role.Type = RoleType.NtfCaptain;
+				ntf.Role.Set(RoleTypeId.NtfCaptain);
 				GiveInventory(ntf);
 				ntf.Scale = new Vector3(1.1f, 1.1f, 1.1f);
 				ntf.Broadcast(10, "<color=yellow><i>Welcome to 05 Rescue</i>\n<b>Your objective is to escort 05-13 out of the facility. Eliminate all hostiles.</b></color>");
@@ -396,8 +397,8 @@ namespace PlayhousePlugin
 			{
 				chaos.ClearBroadcasts();
 
-				chaos.Role.Type = RoleType.ChaosConscript;
-				chaos.Position = RoleExtensions.GetRandomSpawnProperties(chaos.Role.Type).Item1;
+				chaos.Role.Set(RoleTypeId.ChaosConscript);
+				chaos.Position = RoleExtensions.GetRandomSpawnLocation(chaos.Role.Type).Position;
 				chaos.ClearInventory();
 				chaos.AddItem(ItemType.GunLogicer);
 				chaos.AddItem(ItemType.Medkit);
@@ -462,7 +463,7 @@ namespace PlayhousePlugin
 			{
 				scientist.ClearBroadcasts();
 
-				scientist.Role.Type = RoleType.Scientist;
+				scientist.Role.Set(RoleTypeId.Scientist);
 				GiveInventory(scientist);
 				Timing.CallDelayed(1, () =>
 				{
@@ -475,10 +476,10 @@ namespace PlayhousePlugin
 			{
 				chaos.ClearBroadcasts();
 
-				chaos.Role.Type = RoleType.ChaosConscript;
+				chaos.Role.Set(RoleTypeId.ChaosConscript);
 				Timing.CallDelayed(1, () =>
 				{
-					chaos.Position = RoleExtensions.GetRandomSpawnProperties(RoleType.Scp173).Item1;
+					chaos.Position = RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp173).Position;
 				});
 				chaos.ClearInventory();
 				chaos.AddItem(ItemType.GunLogicer);
@@ -520,7 +521,7 @@ namespace PlayhousePlugin
 		{
 			yield return Timing.WaitForSeconds(3f);
 			List<Player> players = new List<Player> { };
-			foreach (Player SCP in Player.Get(Team.SCP))
+			foreach (Player SCP in Player.Get(Team.SCPs))
 			{
 				SCP.Kill("too much cringe");;
 				players.Add(SCP);
@@ -528,9 +529,9 @@ namespace PlayhousePlugin
 			yield return Timing.WaitForSeconds(1f);
 			foreach (Player SCP in players)
 			{
-				SCP.Role.Type = RoleType.Scp049;
+				SCP.Role.Set(RoleTypeId.Scp049);
 				yield return Timing.WaitForSeconds(0.2f);
-				SCP.Position = RoleExtensions.GetRandomSpawnProperties(RoleType.Scp049).Item1;
+				SCP.Position = RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp049).Position;
 			}
 			Map.Broadcast(10, "<color=red><size=55><b>Welcome to <i><color=yellow>Instant Revive</color></i> Event. When SCP-049 kills a person, that person will instantly turn into a zombie!</b></size></color>");
 		}
@@ -539,7 +540,7 @@ namespace PlayhousePlugin
 		{
 			yield return Timing.WaitForSeconds(3f);
 			List<Player> players = new List<Player> { };
-			foreach (Player SCP in Player.Get(Team.SCP))
+			foreach (Player SCP in Player.Get(Team.SCPs))
 			{
 				SCP.Kill("too much cringe");;
 				players.Add(SCP);
@@ -547,9 +548,9 @@ namespace PlayhousePlugin
 			yield return Timing.WaitForSeconds(1f);
 			foreach (Player SCP in players)
 			{
-				SCP.Role.Type = RoleType.Scp049;
+				SCP.Role.Set(RoleTypeId.Scp049);
 				yield return Timing.WaitForSeconds(0.2f);
-				SCP.Position = RoleExtensions.GetRandomSpawnProperties(RoleType.Scp049).Item1;
+				SCP.Position = RoleExtensions.GetRandomSpawnLocation(RoleTypeId.Scp049).Position;
 			}
 			Map.Broadcast(10, "<color=red><size=55><b>Welcome to <i><color=yellow>Plague Doctor's Beckoning</color></i> Event. When SCP-049 revives a dead body, that person will turn into a Random SCP</b></size></color>");
 		}

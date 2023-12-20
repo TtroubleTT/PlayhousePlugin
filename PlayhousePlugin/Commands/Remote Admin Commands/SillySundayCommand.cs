@@ -15,7 +15,7 @@ namespace PlayhousePlugin.Commands
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
 			if (EventHandler.SillySunday)
 			{

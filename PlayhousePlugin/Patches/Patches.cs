@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 using Exiled.API.Features;
+using Exiled.API.Features.Items;
+using Exiled.Events.Handlers;
 using HarmonyLib;
 using Hints;
 using Interactables.Interobjects.DoorUtils;
@@ -14,27 +16,18 @@ using InventorySystem.Items.Firearms.Modules;
 using InventorySystem.Items.Keycards;
 using NorthwoodLib.Pools;
 using PlayableScps;
+using PlayerRoles;
+using PlayerRoles.PlayableScps;
 using PlayerStatsSystem;
 using PlayhousePlugin.CustomClass.SCP;
 using PlayhousePlugin.CustomClass.SCP_Abilities;
+using Hint = Unity.Burst.CompilerServices.Hint;
+using Player = Exiled.API.Features.Player;
 using Scp096 = PlayableScps.Scp096;
 
 
 namespace PlayhousePlugin
 {
-	// SCP Speaking
-	[HarmonyPatch(typeof(Radio), nameof(Radio.UserCode_CmdSyncTransmissionStatus))]
-	public static class SpeechPatch
-	{
-		public static bool Prefix(Radio __instance, bool b)
-		{
-			if (Player.Get(__instance._hub).IsScp)
-				__instance._dissonanceSetup.MimicAs939 = b;
-			return true;
-		}
-	}
-
-	
 	[HarmonyPatch(typeof(Scp096), nameof(Scp096.UpdateVision))]
 	public static class Scp096DelayRemove
 	{
@@ -45,8 +38,8 @@ namespace PlayhousePlugin
 			{
 				ReferenceHub value = keyValuePair.Value;
 				CharacterClassManager characterClassManager = value.characterClassManager;
-				if (characterClassManager.CurClass != RoleType.Spectator &&
-				    characterClassManager.CurClass != RoleType.Tutorial &&
+				if (characterClassManager.CurClass != RoleTypeId.Spectator &&
+				    characterClassManager.CurClass != RoleTypeId.Tutorial &&
 				    !(value == __instance.Hub) &&
 				    !characterClassManager.IsAnyScp() &&
 				    Vector3.Dot((value.PlayerCameraReference.position - vector).normalized, __instance.Hub.PlayerCameraReference.forward) >= 0.1f)
@@ -94,7 +87,7 @@ namespace PlayhousePlugin
 				return false;
 			}
 			DoorVariant doorVariant;
-			if ((doorVariant = (regularDoorButton.Target as DoorVariant)) != null && Door.Get(doorVariant).Nametag.Contains("106"))
+			if ((doorVariant = (regularDoorButton.Player as DoorVariant)) != null && Door.Get(doorVariant).Nametag.Contains("106"))
 			{
 				if(Generator.List.Count(x=>x.IsEngaged) < 2)
 					return false;
@@ -131,7 +124,7 @@ namespace PlayhousePlugin
 
 					if (target is HitboxIdentity identity)
 					{
-						if (identity.TargetHub.characterClassManager.NetworkCurClass == RoleType.Scp106)
+						if (identity.TargetHub.characterClassManager.NetworkCurClass == RoleTypeId.Scp106)
 						{
 							var p = Player.Get(identity.TargetHub);
 							var shooter = Player.Get(__instance.Hub);
@@ -208,7 +201,7 @@ namespace PlayhousePlugin
 
 				if (target is HitboxIdentity identity)
 				{
-					if (identity.TargetHub.characterClassManager.NetworkCurClass == RoleType.Scp106)
+					if (identity.TargetHub.characterClassManager.NetworkCurClass == RoleTypeId.Scp106)
 					{
 						var p = Player.Get(identity.TargetHub);
 						var shooter = Player.Get(__instance.Hub);
@@ -391,7 +384,7 @@ public class StickyGrenade
 {	
 	public static void Prefix(Grenade __instance)
 	{
-		if (PlayhousePlugin.PlayhousePluginRef.Handler.TempStickies.ContainsKey(__instance))
+		if (PlayhousePlugin.PlayhousePluginRef.DamageHandler.TempStickies.ContainsKey(__instance))
 		{ 
 			var rigidbody = __instance.gameObject.GetComponent<Rigidbody>();
 			rigidbody.isKinematic = false;
@@ -410,7 +403,7 @@ public class StickyGrenade
 			gameObject.transform.localScale = new Vector3(3f, 0.5f, 3f);
 			NetworkServer.UnSpawn(gameObject);
 			NetworkServer.Spawn(item.gameObject);
-			PlayhousePlugin.PlayhousePluginRef.Handler.StickyPositions[player][PlayhousePlugin.PlayhousePluginRef.Handler.TempStickies[__instance]] = item;
+			PlayhousePlugin.PlayhousePluginRef.DamageHandler.StickyPositions[player][PlayhousePlugin.PlayhousePluginRef.DamageHandler.TempStickies[__instance]] = item;
 
 			var rigidbody2 = item.gameObject.GetComponent<Rigidbody>();
 			rigidbody2.isKinematic = false;
@@ -425,7 +418,7 @@ public class StickyGrenade
 			//item.Networkrotation = __instance.transform.rotation;
 
 			NetworkServer.Destroy(__instance.gameObject);
-			PlayhousePlugin.PlayhousePluginRef.Handler.TempStickies.Remove(__instance);
+			PlayhousePlugin.PlayhousePluginRef.DamageHandler.TempStickies.Remove(__instance);
 			return;
 		}
 	}

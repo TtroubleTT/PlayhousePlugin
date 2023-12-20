@@ -13,43 +13,25 @@ using System;
 using AdminToys;
 using Exiled.API.Features.Items;
 using Exiled.API.Extensions;
+using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs;
+using Exiled.Events.EventArgs.Player;
 using Footprinting;
 using RemoteAdmin;
 using Mirror.LiteNetLib4Mirror;
 using InventorySystem;
-using InventorySystem.Items.Firearms.Ammo;
+using MapEditorReborn.API.Extensions;
 using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
+using PlayerRoles;
 using PlayerStatsSystem;
+using AmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
 
 namespace PlayhousePlugin
 {
 	// Contains commonly used methods
 	class UtilityMethods
 	{
-		public static void FindAndSetCustomBadge(Player ply)
-		{
-			if (ply.GlobalBadge != null) return;
-			try
-			{
-				var t = File.ReadAllText($@"/home/ubuntu/.config/EXILED/Configs/CustomBadgeTexts/badges.txt").Split('\n').ToList().Where(x => x.Contains(ply.RawUserId)).FirstOrDefault();
-
-				if (t != null)
-				{
-					Timing.CallDelayed(5f, () =>
-					{
-						ply.RankName = ply.RankName=="" ? $"{t.Substring(ply.RawUserId.Length + 1)}" : $"{t.Substring(ply.RawUserId.Length+1)} ({ply.RankName})";
-					});
-				}
-
-			}
-			catch
-			{
-				return;
-			}
-		}
-
 		public static IEnumerator<float> FadeAway(PrimitiveObjectToy toy)
 		{
 			var time = 0f;
@@ -95,7 +77,7 @@ namespace PlayhousePlugin
 		{
 			var nade = (ExplosiveGrenade) ExplosiveGrenade.Create(grenadeType, player);
 			nade.FuseTime = 99999;
-			var pickup = nade.Spawn(player.Position);
+			var pickup = nade.CreatePickup(player.Position);
 			nade.Base.ServerThrow(10, 1, Vector3.one, player.CameraTransform.forward*2);
 			//nade.SpawnActive(player.Position, player);
 			return pickup;
@@ -157,7 +139,7 @@ namespace PlayhousePlugin
 			}
 			else
 			{
-				if (p.Role.Type != RoleType.Scp079 && p.IsAlive)
+				if (p.Role.Type != RoleTypeId.Scp079 && p.IsAlive)
 				{
 					p.Hurt(4f, "Military Grade Bio-Weapon");
 					//p.Hurt(7.5f, Exterminator, damageType: DamageTypes.Poison);
@@ -235,7 +217,7 @@ namespace PlayhousePlugin
 		// Overheals AHP of target
 		public static void ApplyOverheal(Player p, float h, bool displayHint, Player Healer)
 		{
-			if (p.MaxArtificialHealth == 0 && (p.Role.Type == RoleType.Scp049 || p.Role.Type == RoleType.Scp0492))
+			if (p.MaxArtificialHealth == 0 && (p.Role.Type == RoleTypeId.Scp049 || p.Role.Type == RoleTypeId.Scp0492))
 			{
 				p.MaxArtificialHealth = 100;
 			}
@@ -261,9 +243,9 @@ namespace PlayhousePlugin
 
 		public static void InfectPlayer(Player Ply)
 		{
-			if (!PlayhousePlugin.PlayhousePluginRef.Handler.InfectedPlayers.Contains(Ply))
+			if (!PlayhousePlugin.PlayhousePluginRef.DamageHandler.InfectedPlayers.Contains(Ply))
 			{
-				PlayhousePlugin.PlayhousePluginRef.Handler.InfectedPlayers.Add(Ply);
+				PlayhousePlugin.PlayhousePluginRef.DamageHandler.InfectedPlayers.Add(Ply);
 				Ply.ReferenceHub.playerEffectsController.EnableEffect<Poisoned>();
 				Ply.ReferenceHub.playerEffectsController.EnableEffect<Hemorrhage>();
 			}
@@ -317,7 +299,7 @@ namespace PlayhousePlugin
 			}
 		}
 
-		public static void SpawnRagdoll(Vector3 pos, Quaternion rot, RoleType roleType, string deathCause, Player owner = null)
+		public static void SpawnRagdoll(Vector3 pos, Quaternion rot, RoleTypeId roleType, string deathCause, Player owner = null)
 		{
 			ReferenceHub target = owner?.ReferenceHub ?? ReferenceHub.HostHub;
 			Exiled.API.Features.Ragdoll.Spawn(new RagdollInfo(target, new CustomReasonDamageHandler(deathCause), pos, rot));
@@ -334,7 +316,7 @@ namespace PlayhousePlugin
 
 			// Cleans all the ragdolls
 			foreach (Ragdoll doll in UnityEngine.Object.FindObjectsOfType<Ragdoll>())
-				NetworkServer.Destroy(doll.gameObject);
+				NetworkServer.Destroy(doll.GameObject);
 		}
 
 		/// <summary>
@@ -354,7 +336,7 @@ namespace PlayhousePlugin
 		{
 			// Cleans all the ragdolls
 			foreach (Ragdoll doll in UnityEngine.Object.FindObjectsOfType<Ragdoll>())
-				NetworkServer.Destroy(doll.gameObject);
+				NetworkServer.Destroy(doll.GameObject);
 		}
 
 		/// <summary>
@@ -366,7 +348,7 @@ namespace PlayhousePlugin
 			List<Pickup> Keycards = new List<Pickup>();
 			List<Pickup> Armor = new List<Pickup>();
 
-			foreach (var p in Map.Pickups)
+			foreach (var p in Pickup.List)
 			{
 				switch (p.Type)
 				{
@@ -376,7 +358,7 @@ namespace PlayhousePlugin
 					case ItemType.Radio:
 						Radios.Add(p);
 						break;
-					case ItemType.KeycardNTFLieutenant:
+					case ItemType.KeycardMTFOperative:
 						Keycards.Add(p);
 						break;
 				}
@@ -431,7 +413,7 @@ namespace PlayhousePlugin
 			List<Pickup> Ammo12 = new List<Pickup>();
 
 
-			foreach (var pickup in Map.Pickups)
+			foreach (var pickup in Pickup.List)
 			{
 				if (Vector3.Distance(ev.Position, pickup.Position) < 4)
 				{
@@ -654,7 +636,7 @@ namespace PlayhousePlugin
 			List<Pickup> Ammo12 = new List<Pickup>();
 
 
-			foreach (var pickup in Map.Pickups)
+			foreach (var pickup in Pickup.List)
 			{
 				if (Vector3.Distance(ev.Player.Position, pickup.Position) < 4)
 				{
@@ -943,7 +925,7 @@ namespace PlayhousePlugin
 
 			yield return Timing.WaitForSeconds(1f);
 			player.ClearInventory(false);
-			player.Role.Type = RoleType.Tutorial;
+			player.Role.Set(RoleTypeId.Tutorial);
 			player.Position = new Vector3(53f, 1020f, -44f);
 		}
 
@@ -958,7 +940,7 @@ namespace PlayhousePlugin
 			Jailed jail = EventHandler.JailedPlayers.Find(j => j.Userid == player.UserId);
 			if (jail.CurrentRound)
 			{
-				player.SetRole(jail.Role, SpawnReason.ForceClass, true);
+				player.Role.Set(jail.Role, SpawnReason.ForceClass, true);
 				yield return Timing.WaitForSeconds(0.5f);
 				player.ResetInventory(jail.Items);
 				player.Health = jail.Health;
@@ -970,7 +952,7 @@ namespace PlayhousePlugin
 			}
 			else
 			{
-				player.Role.Type = RoleType.Spectator;
+				player.Role.Type = RoleTypeId.Spectator;
 			}
 			EventHandler.JailedPlayers.Remove(jail);
 		}
@@ -1062,7 +1044,7 @@ namespace PlayhousePlugin
 			}
 		}
 
-		public static void SpawnDummyModel(Player Ply, Vector3 position, Quaternion rotation, RoleType role, float x, float y, float z)
+		public static void SpawnDummyModel(Player Ply, Vector3 position, Quaternion rotation, RoleTypeId role, float x, float y, float z)
 		{
 			GameObject obj = UnityEngine.Object.Instantiate(
 										LiteNetLib4MirrorNetworkManager.singleton.playerPrefab);
@@ -1096,7 +1078,7 @@ namespace PlayhousePlugin
 				DummyIndex = objs.Count();*/
 		}
 		
-		public static void SpawnTempDummy(Player Ply, Vector3 position, Quaternion rotation, RoleType role, float x, float y, float z)
+		public static void SpawnTempDummy(Player Ply, Vector3 position, Quaternion rotation, RoleTypeId role, float x, float y, float z)
 		{
 			GameObject obj = UnityEngine.Object.Instantiate(
 				LiteNetLib4MirrorNetworkManager.singleton.playerPrefab);
@@ -1197,7 +1179,7 @@ namespace PlayhousePlugin
 		
 		public static IEnumerator<float> DeathSequence(Player boss)
 		{
-			boss.NoClipEnabled = true;
+			boss.IsNoclipPermitted = true;
 			
 			yield return Timing.WaitForSeconds(0.5f);
 

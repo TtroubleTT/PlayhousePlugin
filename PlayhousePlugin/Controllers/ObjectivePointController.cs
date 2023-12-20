@@ -59,8 +59,8 @@ namespace PlayhousePlugin
 
                 var posRot = value.Value.PickRandom();
                     
-                g.transform.localPosition = value.Key.Transform.TransformPoint(posRot.Pos);
-                g.transform.localRotation = value.Key.Transform.rotation * Quaternion.Euler(posRot.Rot);
+                g.transform.localPosition = value.Key.transform.TransformPoint(posRot.Pos);
+                g.transform.localRotation = value.Key.transform.rotation * Quaternion.Euler(posRot.Rot);
                 g.AddComponent<ObjectivePointComponent>();
 
                 g.GetComponent<ObjectivePointComponent>().ObjectiveCaptured += OnObjectiveCaptured;
@@ -79,8 +79,8 @@ namespace PlayhousePlugin
 
                 var posRot = value.Value.PickRandom();
                     
-                g.transform.localPosition = value.Key.Transform.TransformPoint(posRot.Pos);
-                g.transform.localRotation = value.Key.Transform.rotation * Quaternion.Euler(posRot.Rot);
+                g.transform.localPosition = value.Key.transform.TransformPoint(posRot.Pos);
+                g.transform.localRotation = value.Key.transform.rotation * Quaternion.Euler(posRot.Rot);
                 g.AddComponent<ObjectivePointComponent>();
 
                 g.GetComponent<ObjectivePointComponent>().ObjectiveCaptured += OnObjectiveCaptured;

@@ -4,6 +4,7 @@ using CustomPlayerEffects;
 using Exiled.API.Features;
 using MEC;
 using Mirror;
+using PlayerRoles;
 using PlayerStatsSystem;
 using PlayhousePlugin.CustomClass.SCP;
 using UnityEngine;
@@ -32,7 +33,7 @@ namespace PlayhousePlugin.CustomClass.SCP_Abilities
             }
 
             Ragdoll doll = colliders[0].gameObject.GetComponentInParent<Ragdoll>();
-            if (doll.GetRole() != RoleType.Scp0492)
+            if (doll.GetRole() != RoleTypeId.Scp0492)
             {
                 Ply.ShowCenterDownHint($"<color=yellow>This body has not been cured from the pestilence.</color>",3);
             	return false;
@@ -51,7 +52,7 @@ namespace PlayhousePlugin.CustomClass.SCP_Abilities
 	            return false;
             }
 
-            Patient.Role.Type = RoleType.Scp0492;
+            Patient.Role.Set(RoleTypeId.Scp0492);
             SCP0492.Overclocker(Patient);
             Vector3 pos = Ply.Position;
             
@@ -65,7 +66,7 @@ namespace PlayhousePlugin.CustomClass.SCP_Abilities
 	            Ply.ShowCenterDownHint($"<color=yellow>Revived Patient!</color>",3);
             });
                 
-            NetworkServer.Destroy(doll.gameObject);
+            NetworkServer.Destroy(doll.GameObject);
             return true;
         }
     }

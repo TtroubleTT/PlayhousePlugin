@@ -4,6 +4,7 @@ using System.IO;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
+using MapEditorReborn.API.Extensions;
 using MEC;
 using RemoteAdmin;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
 			if (Donator.GetDonator(p, out Donator donator) != null)
 			{
@@ -61,7 +62,7 @@ namespace PlayhousePlugin.Commands
 								UtilityMethods.CheckExistingPetAndKill(p.UserId);
 
 								PetFollow.Coroutines.Add(p.UserId,
-									Timing.RunCoroutine(PetFollow.FollowPlayer(p, Item.Create(Items[command]).Spawn(p.Position + Vector3.up * 2))));
+									Timing.RunCoroutine(PetFollow.FollowPlayer(p, Item.Create(Items[command]).CreatePickup(p.Position + Vector3.up * 2))));
 
 								UtilityMethods.UpdatePreference(p, command);
 								response = "Pet Equipped!";
@@ -80,7 +81,7 @@ namespace PlayhousePlugin.Commands
 							UtilityMethods.CheckExistingPetAndKill(p.UserId);
 
 							PetFollow.Coroutines.Add(p.UserId,
-									Timing.RunCoroutine(PetFollow.FollowPlayer(p, Item.Create(Items[command]).Spawn(p.Position + Vector3.up * 2))));
+									Timing.RunCoroutine(PetFollow.FollowPlayer(p, Item.Create(Items[command]).CreatePickup(p.Position + Vector3.up * 2))));
 
 							UtilityMethods.UpdatePreference(p, command);
 							response = "Pet Equipped!";
@@ -107,13 +108,13 @@ namespace PlayhousePlugin.Commands
 			{ "D1", ItemType.MicroHID },
 
 			// Tier 1 Donators
-			{ "11", ItemType.KeycardNTFLieutenant },
+			{ "11", ItemType.KeycardMTFOperative },
 			{ "12", ItemType.Coin },
 			{ "13", ItemType.Painkillers },
 			{ "14", ItemType.SCP018 },
 
 			// Tier 2 Donators
-			{ "21", ItemType.KeycardNTFCommander },
+			{ "21", ItemType.KeycardMTFCaptain },
 			{ "22", ItemType.GrenadeFlash },
 			{ "23", ItemType.Medkit },
 			{ "24", ItemType.SCP207},

@@ -73,7 +73,7 @@
 							afk = true;
 							if (Ply.CurrentRoom.Type == RoomType.Lcz914)
 							{
-								if (player.Role.Team == Team.SCP || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
+								if (player.Role.Team == Team.SCPs || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
 								{
 									player.SendCustomSync(ball1.netIdentity, typeof(Pickup), null, (writer) =>
 									{
@@ -115,7 +115,7 @@
 							}
 							else
 							{
-								if (player.Role.Team == Team.SCP || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
+								if (player.Role.Team == Team.SCPs || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
 								{
 									player.SendCustomSync(ball1.netIdentity, typeof(Pickup), null, (writer) =>
 									{
@@ -162,7 +162,7 @@
 						{
 							if (Ply.CurrentRoom.Type == RoomType.Lcz914)
 							{
-								if (player.Role.Team == Team.SCP || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
+								if (player.Role.Team == Team.SCPs || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
 								{
 									player.SendCustomSync(ball1.netIdentity, typeof(Pickup), null, (writer) =>
 									{
@@ -204,7 +204,7 @@
 							}
 							else
 							{
-								if (player.Role.Team == Team.SCP || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
+								if (player.Role.Team == Team.SCPs || Ply.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
 								{
 									player.SendCustomSync(ball1.netIdentity, typeof(Pickup), null, (writer) =>
 									{

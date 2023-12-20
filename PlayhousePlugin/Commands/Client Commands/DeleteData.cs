@@ -21,9 +21,9 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
-			if (!Handler.deletes.Contains(p))
+			if (!DamageHandler.deletes.Contains(p))
 			{
 				response = "Your data is marked for deletion, it will take affect next round";
 				return true;

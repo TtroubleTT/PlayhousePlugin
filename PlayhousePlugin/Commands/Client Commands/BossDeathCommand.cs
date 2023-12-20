@@ -2,6 +2,7 @@ using System;
 using CommandSystem;
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using RemoteAdmin;
 
 namespace PlayhousePlugin.Commands
@@ -22,7 +23,7 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
 			if (p.RawUserId != "kognity")
 			{
@@ -43,7 +44,7 @@ namespace PlayhousePlugin.Commands
 			Timing.CallDelayed(12, () =>
 			{
 				p.Kill("too much cringe");
-				p.Role.Type = RoleType.Spectator;
+				p.Role.Set(RoleTypeId.Spectator);
 				Round.IsLocked = false;
 			});
 

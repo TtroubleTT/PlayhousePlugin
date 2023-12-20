@@ -31,7 +31,7 @@ namespace PlayhousePlugin.CustomClass.Abilities
             Ragdoll doll = colliders[0].gameObject.GetComponentInParent<Ragdoll>();
 
             int chance;
-            List<ItemType> CardItems = new List<ItemType> { ItemType.Coin, ItemType.KeycardScientist, ItemType.KeycardZoneManager, ItemType.KeycardResearchCoordinator, ItemType.KeycardNTFOfficer, ItemType.KeycardContainmentEngineer, ItemType.KeycardO5 };
+            List<ItemType> CardItems = new List<ItemType> { ItemType.Coin, ItemType.KeycardScientist, ItemType.KeycardZoneManager, ItemType.KeycardResearchCoordinator, ItemType.KeycardMTFOperative, ItemType.KeycardContainmentEngineer, ItemType.KeycardO5 };
 
             chance = EventHandler.random.Next(0, 100);
 
@@ -53,7 +53,7 @@ namespace PlayhousePlugin.CustomClass.Abilities
             }
             else if (chance <= 6 && chance > 3)
             {
-	            Ply.AddItem(ItemType.KeycardNTFOfficer);
+	            Ply.AddItem(ItemType.KeycardMTFOperative);
             }
             else if (chance <= 3 && chance > 2)
             {
@@ -65,7 +65,7 @@ namespace PlayhousePlugin.CustomClass.Abilities
             }
             
             Ply.ShowCenterDownHint($"<color=yellow>Body Cleaned!</color>",3);
-            NetworkServer.Destroy(doll.gameObject);
+            NetworkServer.Destroy(doll.GameObject);
             return true;
         }
     }

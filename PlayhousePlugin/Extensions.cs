@@ -5,6 +5,7 @@ using Exiled.API.Enums;
 using System.Linq;
 using Interactables.Interobjects.DoorUtils;
 using Hints;
+using PlayerRoles;
 using PlayhousePlugin.Components;
 using PlayhousePlugin.CustomClass;
 using UnityEngine;
@@ -45,7 +46,7 @@ namespace PlayhousePlugin
 
 		public static bool IsInfected(this Player ply)
 		{
-			return PlayhousePlugin.PlayhousePluginRef.Handler.InfectedPlayers.Contains(ply);
+			return PlayhousePlugin.PlayhousePluginRef.DamageHandler.InfectedPlayers.Contains(ply);
 		}
 
 		public static string GetGroupName(this UserGroup group)
@@ -60,7 +61,7 @@ namespace PlayhousePlugin
 			return !string.IsNullOrEmpty(group) && PlayhousePlugin.PlayhousePluginRef.Config.ActiveGroups.Contains(group);
 		}
 
-		public static RoleType GetRole(this Ragdoll ragdoll)
+		public static RoleTypeId GetRole(this Ragdoll ragdoll)
 		{
 			return ragdoll.NetworkInfo.RoleType;
 		}

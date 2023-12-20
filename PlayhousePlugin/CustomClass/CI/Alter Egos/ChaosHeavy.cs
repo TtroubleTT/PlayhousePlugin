@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using UnityEngine;
 
 namespace PlayhousePlugin.CustomClass
@@ -22,7 +23,7 @@ namespace PlayhousePlugin.CustomClass
 
         public override void Escape()
         {
-            Ply.Role.Type = RoleType.NtfPrivate;
+            Ply.Role.Type = RoleTypeId.NtfPrivate;
             Ply.CustomClassManager().DisposeCustomClass();
             Ply.CustomClassManager().CustomClass = new NtfHeavy(Ply);
         }
@@ -95,7 +96,7 @@ namespace PlayhousePlugin.CustomClass
                     foreach (var ply in Player.List.Where(x=> Vector3.Distance(x.Position, Ply.Position) <= 7))
                     {
                         if (ply == Ply) continue;
-                        if ((ply.Role.Team == Team.CHI || ply.Role.Team == Team.CDP ) && !ply.IsCuffed)
+                        if ((ply.Role.Team == Team.ChaosInsurgency || ply.Role.Team == Team.ClassD ) && !ply.IsCuffed)
                         {
                             if (!PlayersAlreadyAffected.Contains(ply))
                             {

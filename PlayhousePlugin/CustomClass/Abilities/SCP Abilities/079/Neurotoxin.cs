@@ -3,6 +3,7 @@ using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using PlayerStatsSystem;
 
 namespace PlayhousePlugin.CustomClass.Abilities
@@ -69,7 +70,7 @@ namespace PlayhousePlugin.CustomClass.Abilities
         	{
         		foreach (Player player in roomToPoison.Players)
         		{
-        			if (player.Role.Team != Team.SCP && player.IsAlive)
+        			if (player.Role.Team != Team.SCPs && player.IsAlive)
         			{
         				if (player.Health > 1f)
         				{

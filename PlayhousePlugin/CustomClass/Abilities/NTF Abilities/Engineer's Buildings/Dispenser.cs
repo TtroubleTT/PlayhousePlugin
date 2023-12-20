@@ -8,6 +8,7 @@ using InventorySystem;
 using InventorySystem.Items.Usables.Scp330;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
+using PlayerRoles;
 using UnityEngine;
 
 namespace PlayhousePlugin.CustomClass.Abilities
@@ -30,7 +31,7 @@ namespace PlayhousePlugin.CustomClass.Abilities
         
         public override bool UseCooldownAbility()
         {
-	        if (Ply.Role.Type == RoleType.Tutorial)
+	        if (Ply.Role.Type == RoleTypeId.Tutorial)
 		        return false;
 	        
 	        if (!Ply.ReferenceHub.playerMovementSync.Grounded)
@@ -77,7 +78,7 @@ namespace PlayhousePlugin.CustomClass.Abilities
 				
 				foreach (var ply in Player.List.Where(x=> Vector3.Distance(x.Position, buildingPosition) <= DispenserRadius))
 				{
-					if (ply.Role.Team == Team.MTF || ply.Role.Team == Team.RSC || ply.IsCuffed)
+					if (ply.Role.Team == Team.FoundationForces || ply.Role.Team == Team.Scientists || ply.IsCuffed)
 					{
 						if (PlayersAlreadyAffected.Contains(ply)) continue;
 						Dispense(ply, 10, 10);

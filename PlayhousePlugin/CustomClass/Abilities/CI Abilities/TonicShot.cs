@@ -29,7 +29,6 @@ namespace PlayhousePlugin.CustomClass.Abilities
         }
         public override bool UseCooldownAbility()
         {
-            Ply.ChangeRunningSpeed(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier);
             Ply.MaxHealth = 125;
             Ply.Health = 100;
             Scp330Bag.AddSimpleRegeneration(Ply.ReferenceHub, 2, 20);

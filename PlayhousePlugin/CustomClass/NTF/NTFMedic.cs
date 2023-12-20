@@ -3,6 +3,7 @@ using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using UnityEngine;
 
 namespace PlayhousePlugin.CustomClass
@@ -17,7 +18,7 @@ namespace PlayhousePlugin.CustomClass
 
         public override void Escape()
         {
-            Ply.Role.Type = RoleType.ChaosRifleman;
+            Ply.Role.Type = RoleTypeId.ChaosRifleman;
             Ply.CustomClassManager().DisposeCustomClass();
             Ply.CustomClassManager().CustomClass = new ChaosMedic(Ply);
         }
@@ -124,7 +125,7 @@ namespace PlayhousePlugin.CustomClass
                     foreach (var ply in Player.List.Where(x=> Vector3.Distance(x.Position, Ply.Position) <= 7))
                     {
                         if (ply == Ply) continue;
-                        if (ply.Role.Team == Team.MTF || ply.Role.Team == Team.RSC  || ply.IsCuffed)
+                        if (ply.Role.Team == Team.FoundationForces || ply.Role.Team == Team.Scientists  || ply.IsCuffed)
                         {
                             if (!PlayersAlreadyAffected.Contains(ply))
                             {

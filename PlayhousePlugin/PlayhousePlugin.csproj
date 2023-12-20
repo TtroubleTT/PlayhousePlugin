@@ -34,6 +34,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\AppData\Roaming\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Accessibility, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\..\..\..\References\Accessibility.dll</HintPath>
     </Reference>
@@ -502,7 +505,6 @@
     <Compile Include="CustomClass\Abilities\CI Abilities\ChaosMedicRevive.cs" />
     <Compile Include="CustomClass\Abilities\CI Abilities\GasGrenade.cs" />
     <Compile Include="CustomClass\Abilities\CI Abilities\TonicShot.cs" />
-    <Compile Include="CustomClass\Abilities\CI Abilities\InfraredVision.cs" />
     <Compile Include="CustomClass\Abilities\CI Abilities\MiniDispenser.cs" />
     <Compile Include="CustomClass\Abilities\CI Abilities\MorphineShot.cs" />
     <Compile Include="CustomClass\Abilities\CI Abilities\RandomizerTPChaos.cs" />
@@ -517,12 +519,9 @@
     <Compile Include="CustomClass\Abilities\NTF Abilities\NTFMedicRevive.cs" />
     <Compile Include="CustomClass\Abilities\NTF Abilities\RandomizerTPNTF.cs" />
     <Compile Include="CustomClass\Abilities\PassiveAbilities.cs" />
-    <Compile Include="CustomClass\Abilities\SCP Abilities\079\GeneratorOverride.cs" />
     <Compile Include="CustomClass\Abilities\SCP Abilities\079\Neurotoxin.cs" />
-    <Compile Include="CustomClass\Abilities\SCP Abilities\079\Stalk.cs" />
     <Compile Include="CustomClass\Abilities\SCP Abilities\079\WarheadJam.cs" />
     <Compile Include="CustomClass\Abilities\SCP Abilities\SCPHeal.cs" />
-    <Compile Include="CustomClass\Abilities\SCP Abilities\Vanish.cs" />
     <Compile Include="CustomClass\Abilities\SCP Abilities\Zombies\DrugDose.cs" />
     <Compile Include="CustomClass\Abilities\SCP Abilities\Zombies\OverclockToggle.cs" />
     <Compile Include="CustomClass\Abilities\SCP Abilities\Zombies\Sneeze.cs" />
@@ -574,10 +573,8 @@
     <Compile Include="CustomClass\SCPs\SCP049CustomClass.cs" />
     <Compile Include="CustomClass\SCPs\SCP079CustomClass.cs" />
     <Compile Include="CustomClass\SCPs\SCP096CustomClass.cs" />
-    <Compile Include="CustomClass\SCPs\SCP106CustomClass.cs" />
     <Compile Include="CustomClass\SCPs\SCP173CustomClass.cs" />
     <Compile Include="CustomClass\SCPs\SCP93953CustomClass.cs" />
-    <Compile Include="CustomClass\SCPs\SCP93989CustomClass.cs" />
     <Compile Include="CustomClass\SCPs\Zombie Custom Classes\Boomer.cs" />
     <Compile Include="CustomClass\SCPs\Zombie Custom Classes\MedicalStudent.cs" />
     <Compile Include="CustomClass\SCPs\Zombie Custom Classes\Overclocker.cs" />
@@ -585,7 +582,6 @@
     <Compile Include="CustomClass\SCPs\Zombie Custom Classes\Sprinter.cs" />
     <Compile Include="CustomGameMode\BreakoutBlitz.cs" />
     <Compile Include="DeathmatchServer\DeathmatchServer.cs" />
-    <Compile Include="Misc\Containment106ObjectiveController.cs" />
     <Compile Include="Misc\Cock.cs" />
     <Compile Include="Commands\Remote Admin Commands\InfAmmo\All.cs" />
     <Compile Include="Commands\Remote Admin Commands\InfAmmo\Clear.cs" />
@@ -615,7 +611,6 @@
     <Compile Include="Utils and Consts\Utils.cs" />
     <Compile Include="Webhooks\Message.cs" />
     <Compile Include="Webhooks\Translations.cs" />
-    <Compile Include="Webhooks\WebhookEventHandler.cs" />
     <Compile Include="Webhooks\WebhookUrls.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -627,10 +622,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scratch.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CustomClass\Abilities\Guard Abilities" />
-    <Folder Include="CustomClass\Abilities\Scientist Abilties" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\website-backend\Kognity.DB\Kognity.DB.csproj">

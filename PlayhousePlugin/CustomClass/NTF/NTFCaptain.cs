@@ -1,5 +1,6 @@
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using PlayhousePlugin.CustomClass.Abilities;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace PlayhousePlugin.CustomClass
         public override AbilityBase[] ActiveAbilities { get; }
         public override void Escape()
         {
-            Ply.Role.Type = RoleType.ChaosRepressor;
+            Ply.Role.Type = RoleTypeId.ChaosRepressor;
             Ply.CustomClassManager().DisposeCustomClass();
         }
 

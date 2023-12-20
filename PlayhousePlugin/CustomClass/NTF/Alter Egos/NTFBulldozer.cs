@@ -1,5 +1,6 @@
 using Exiled.API.Features;
 using MEC;
+using PlayerRoles;
 using PlayhousePlugin.CustomClass.Abilities;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace PlayhousePlugin.CustomClass
         
         public override void Escape()
         {
-            Ply.Role.Type = RoleType.ChaosMarauder;
+            Ply.Role.Type = RoleTypeId.ChaosMarauder;
             Ply.CustomClassManager().DisposeCustomClass();
             Ply.CustomClassManager().CustomClass = new ChaosBulldozer(Ply);
         }

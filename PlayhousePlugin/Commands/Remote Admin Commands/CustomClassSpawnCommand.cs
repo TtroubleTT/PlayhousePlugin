@@ -21,7 +21,7 @@ namespace PlayhousePlugin.Commands
 				return true;
 			}
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 			p.ClearBroadcasts();
 
 			var player = Player.Get(arguments.At(0));

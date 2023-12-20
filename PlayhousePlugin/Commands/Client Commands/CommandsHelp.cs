@@ -22,7 +22,7 @@ namespace PlayhousePlugin.Commands
 			}
 
 			var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-			var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+			var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
 			//response = "<color=yellow>List of valid commands and default binds:\n\".commands\" - Gives this list\n\".commands\" - Gives this list\n\".kill\" - Kills yourself\n\".suicide\" - Kills yourself\n\".scplist\" - Gives a list of all currently alive SCPs (only works if you're SCP)\n\".pets\" - Gives the menu for donator pets\n\".deletedata\" - Wipes your Player Stats (WARNING: CHANGES ARE PERMANENT)\n\".discord\" - Gives you discord link\n\".clearbroadcast\" - Clears any broadcasts you have</color>";
 			response = null;

@@ -15,17 +15,17 @@ namespace PlayhousePlugin.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             var p = Player.Get(((PlayerCommandSender)sender).ReferenceHub);
-            var Handler = PlayhousePlugin.PlayhousePluginRef.Handler;
+            var DamageHandler = PlayhousePlugin.PlayhousePluginRef.DamageHandler;
 
-            if (Handler.PlayersWithInfiniteDrop.Contains(p))
+            if (DamageHandler.PlayersWithInfiniteDrop.Contains(p))
             {
-                Handler.PlayersWithInfiniteDrop.Remove(p);
+                DamageHandler.PlayersWithInfiniteDrop.Remove(p);
                 response = "Removed from list";
                 return true;
             }
             else
             {
-                Handler.PlayersWithInfiniteDrop.Add(p);
+                DamageHandler.PlayersWithInfiniteDrop.Add(p);
                 response = "Added to list";
                 return true;
             }

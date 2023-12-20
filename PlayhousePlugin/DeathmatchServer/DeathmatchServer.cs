@@ -6,10 +6,12 @@ using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
 using Mirror;
 using Mirror.LiteNetLib4Mirror;
+using PlayerRoles;
 using UnityEngine;
 
 namespace PlayhousePlugin
@@ -229,23 +231,23 @@ namespace PlayhousePlugin
 			Arena2Door3.GetComponent<DoorVariant>().NetworkActiveLocks = (ushort)DoorLockType.AdminCommand;
 			Arena2Door4.GetComponent<DoorVariant>().NetworkActiveLocks = (ushort)DoorLockType.AdminCommand;
 
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-82, -999, 123)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-82, -999, 144)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-59, -999, 144)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-82, -999, 123)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-82, -999, 144)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-59, -999, 144)));
 			
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-42, -999, 144)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-41, -999, 123)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-64, -999, 123)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-42, -999, 144)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-41, -999, 123)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-64, -999, 123)));
 			
 			var color1 = new Color(200f/255f,200f/255f,255f/255f);
 
-			Map.FindParentRoom(pickups[0].Base.gameObject).Color = color1;
-			Map.FindParentRoom(pickups[1].Base.gameObject).Color = color1;
-			Map.FindParentRoom(pickups[2].Base.gameObject).Color = color1;
+			Room.FindParentRoom(pickups[0].Base.gameObject).Color = color1;
+			Room.FindParentRoom(pickups[1].Base.gameObject).Color = color1;
+			Room.FindParentRoom(pickups[2].Base.gameObject).Color = color1;
 
-			Map.FindParentRoom(pickups[3].Base.gameObject).Color = color1;
-			Map.FindParentRoom(pickups[4].Base.gameObject).Color = color1;
-			Map.FindParentRoom(pickups[5].Base.gameObject).Color = color1;
+			Room.FindParentRoom(pickups[3].Base.gameObject).Color = color1;
+			Room.FindParentRoom(pickups[4].Base.gameObject).Color = color1;
+			Room.FindParentRoom(pickups[5].Base.gameObject).Color = color1;
 
 			for (var index = 0; index < pickups.Count; index++)
 			{
@@ -299,27 +301,27 @@ namespace PlayhousePlugin
 			Arena4Door5.GetComponent<DoorVariant>().NetworkActiveLocks = (ushort)DoorLockType.AdminCommand;
 			Arena4Door6.GetComponent<DoorVariant>().NetworkActiveLocks = (ushort)DoorLockType.AdminCommand;
 
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-82, -999, 103)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-61, -999, 103)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-40, -999, 103)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-21, -999, 103)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-82, -999, 103)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-61, -999, 103)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-40, -999, 103)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-21, -999, 103)));
 			
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-21, -999, 82)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-41, -999, 82)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-61, -999, 82)));
-			pickups.Add(Item.Create(ItemType.Adrenaline).Spawn(new Vector3(-81, -999, 82)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-21, -999, 82)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-41, -999, 82)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-61, -999, 82)));
+			pickups.Add(Item.Create(ItemType.Adrenaline).CreatePickup(new Vector3(-81, -999, 82)));
 			
 			var color2 = new Color(200f/255f,255f/255f,200f/255f);
 			
-			Map.FindParentRoom(pickups[0].Base.gameObject).Color = color2;
-			Map.FindParentRoom(pickups[1].Base.gameObject).Color = color2;
-			Map.FindParentRoom(pickups[2].Base.gameObject).Color = color2;
-			Map.FindParentRoom(pickups[3].Base.gameObject).Color = color2;
+			Room.FindParentRoom(pickups[0].Base.gameObject).Color = color2;
+			Room.FindParentRoom(pickups[1].Base.gameObject).Color = color2;
+			Room.FindParentRoom(pickups[2].Base.gameObject).Color = color2;
+			Room.FindParentRoom(pickups[3].Base.gameObject).Color = color2;
 			
-			Map.FindParentRoom(pickups[4].Base.gameObject).Color = color2;
-			Map.FindParentRoom(pickups[5].Base.gameObject).Color = color2;
-			Map.FindParentRoom(pickups[6].Base.gameObject).Color = color2;
-			Map.FindParentRoom(pickups[7].Base.gameObject).Color = color2;
+			Room.FindParentRoom(pickups[4].Base.gameObject).Color = color2;
+			Room.FindParentRoom(pickups[5].Base.gameObject).Color = color2;
+			Room.FindParentRoom(pickups[6].Base.gameObject).Color = color2;
+			Room.FindParentRoom(pickups[7].Base.gameObject).Color = color2;
 
 			for (var index = 0; index < pickups.Count; index++)
 			{
@@ -391,8 +393,8 @@ namespace PlayhousePlugin
             kc.Queue.Add(kc.King);
             kc.Queue.Add(kc.Competitor);
 
-            kc.King.Role.Type = RoleType.Spectator;
-            kc.Competitor.Role.Type = RoleType.Spectator;
+            kc.King.Role.Set(RoleTypeId.Spectator);
+            kc.Competitor.Role.Set(RoleTypeId.Spectator);
 
             kc.King = null;
             kc.Competitor = null;
@@ -429,7 +431,7 @@ namespace PlayhousePlugin
 
 			var gun = GunList.PickRandom();
 
-			ply1.Role.Type = RoleType.ClassD;
+			ply1.Role.Set(RoleTypeId.ClassD);
 			//ply1.ReferenceHub.PlayerCameraReference.rotation = new Quaternion(0, 0, 0, 0);
 			Timing.CallDelayed(1f, () =>
 			{
@@ -446,7 +448,7 @@ namespace PlayhousePlugin
 				ply1.Health = 150;
 			});
 
-			ply2.Role.Type = RoleType.Scientist;
+			ply2.Role.Set(RoleTypeId.Scientist);
 			//ply1.ReferenceHub.PlayerCameraReference.rotation = new Quaternion(0, 0, 0, 0);
 			Timing.CallDelayed(1f, () =>
 			{
@@ -519,7 +521,7 @@ namespace PlayhousePlugin
 
 			    foreach (Player ply in Player.List)
 			    {
-				    if(ply.Role.Type == RoleType.Tutorial)
+				    if(ply.Role.Type == RoleTypeId.Tutorial)
 				    {
 					    if (KingAndCompetitor.IsInQueue(ply))
 					    {
@@ -528,7 +530,7 @@ namespace PlayhousePlugin
 					    }
 				    }
 
-				    if (ply.Role.Team == Team.RIP)
+				    if (ply.Role.Team == Team.Dead)
 				    {
 					    if(KingAndCompetitor.IsKing(ply))
 						    ply.ShowCenterDownHint($"<size=70><color=#ff96de>You are currently the King</color></size>\n", 1);
