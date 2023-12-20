@@ -4,14 +4,19 @@ using System.Linq;
 using AdminToys;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Doors;
 using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups;
+using Exiled.API.Features.Roles;
 using Exiled.Events.EventArgs;
 using Interactables.Interobjects.DoorUtils;
 using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using Mirror;
 using Mirror.LiteNetLib4Mirror;
+using PlayerRoles;
 using PlayhousePlugin.CustomGameMode;
+using PluginAPI.Roles;
 using UnityEngine;
 
 namespace PlayhousePlugin.Components
@@ -23,7 +28,7 @@ namespace PlayhousePlugin.Components
         public Utils.ObjectiveStates _state = Utils.ObjectiveStates.Disabled;
         public float Radius = 2.5f;
         public bool AllowAllToCap = false;
-        public RoleType RoleToNotify = RoleType.None;
+        public RoleTypeId RoleToNotify = RoleTypeId.None;
         
         private float _decayRate = 0.5f;
         private float _capRate = 1.5f;
@@ -74,7 +79,7 @@ namespace PlayhousePlugin.Components
             _positionDisplay = _position + Vector3.up * 0.23f;
             
             // Registering Events
-            Exiled.Events.Handlers.Player.PickingUpArmor += OnPickup;
+            Exiled.Events.Handlers.Player.SearchingPickup += OnPickup;
 
             // Door beep sounds
             var doorPrefab = LiteNetLib4MirrorNetworkManager.singleton.spawnPrefabs.FirstOrDefault(x => x.name == "HCZ BreakableDoor");
@@ -85,7 +90,7 @@ namespace PlayhousePlugin.Components
             _door.Position = _position + Vector3.down;
             _door.Scale = Vector3.zero;
             _door.ChangeLock(DoorLockType.AdminCommand);
-            _door.MaxHealth = float.MaxValue;
+            _door.Base = float.MaxValue;
             _door.Health = float.MaxValue;
 
             // Panel setup
